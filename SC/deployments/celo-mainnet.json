@@ -1,0 +1,10 @@
+{
+  "network": "celo-mainnet",
+  "chainId": 42220,
+  "contracts": {
+    "USDC": "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
+    "AgentRegistry": "0x13cA51F693A1635B5181F98f0B23a065357F9b30",
+    "DelegationVault": "0x9470E359871996C31632f1496572B0B29B5a2FA0",
+    "PlatformFee": "0x2907d7E6922C4e4D4C05E95d0Bb451d6C615ca06"
+  }
+}

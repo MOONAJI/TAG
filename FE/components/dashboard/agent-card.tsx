@@ -385,7 +385,7 @@ export function AgentCard({ agent: slot }: { agent: DashboardAgentSlot }) {
 
       {!isConnected ? (
         <p className="text-xs text-muted-foreground">
-          Connect your wallet on Monad Testnet to deposit USDC.
+          Connect your wallet on Celo mainnet to deposit USDC.
         </p>
       ) : null}
       {isConnected && !registered ? (

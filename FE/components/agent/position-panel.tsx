@@ -44,7 +44,7 @@ export function PositionPanel({ agentId }: PositionPanelProps) {
   if (!isConnected || !address) {
     return (
       <p className="text-sm text-muted-foreground">
-        Connect your wallet on Monad Testnet to delegate USDC to this agent.
+        Connect your wallet on Celo mainnet to delegate USDC to this agent.
       </p>
     )
   }

@@ -32,7 +32,7 @@ const SEED_MESSAGES: Message[] = [
   {
     role: "agent",
     name: "Yield Agent",
-    text: "Harvested 4.00% on USDC/MON overnight. Rolling 30% of rewards into stMON LP — expected APR 38.3%.",
+    text: "Harvested 4.00% on USDC/CELO overnight. Rolling 30% of rewards into stCELO LP — expected APR 38.3%.",
     time: "09:18",
   },
 ]

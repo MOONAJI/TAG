@@ -1,12 +1,22 @@
 /**
- * Deployed contract addresses on Monad Testnet (chainId 10143).
- * Source: SC/deployments/monad-testnet.json
+ * Deployed contract addresses on Celo Mainnet (chainId 42220).
+ * Source: SC/deployments/celo-mainnet.json
+ *
+ * USDC is the NATIVE Circle USDC on Celo (NOT a mock). All balances and
+ * approvals on the FE point at this address.
  */
-export const MONAD_TESTNET_CHAIN_ID = 10143
+export const CELO_CHAIN_ID = 42220
+
+/** Native USDC on Celo mainnet (Circle, 6 decimals). */
+export const USDC_ADDRESS =
+  "0xcebA9300f2b948710d2653dD7B07f33A8B32118C" as `0x${string}`
 
 export const CONTRACT_ADDRESSES = {
-  AgentRegistry: "0x68eD310267Eb81a1250B36A91B826D0973451461" as `0x${string}`,
-  DelegationVault: "0x4B48792bf23F7c08265Eca82cED0c87258e0aCF5" as `0x${string}`,
-  PlatformFee: "0x863D0583B733951aCDba7e7129Ac6d11Ae1E6868" as `0x${string}`,
-  MockUSDC: "0x68c3fb5C43327ecB367664191D749c002Ad0Ce15" as `0x${string}`,
+  AgentRegistry: "0x13cA51F693A1635B5181F98f0B23a065357F9b30" as `0x${string}`,
+  DelegationVault: "0x9470E359871996C31632f1496572B0B29B5a2FA0" as `0x${string}`,
+  PlatformFee: "0x2907d7E6922C4e4D4C05E95d0Bb451d6C615ca06" as `0x${string}`,
+  // USDC is the native Circle USDC on Celo. Alias kept under the old
+  // `MockUSDC` key so the existing FE call sites don't all need updating.
+  MockUSDC: USDC_ADDRESS,
+  USDC: USDC_ADDRESS,
 } as const

@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 /// @title IPlatformFee
 /// @notice Interface for the PlatformFee contract that charges and accumulates
-///         Hypervault's 0.1% per-trade protocol fee in USDC.
+///         TAG's 0.1% per-trade protocol fee in USDC.
 interface IPlatformFee {
     // ─────────────────────────────── Events ──────────────────────────────────
 

@@ -18,7 +18,7 @@ import { useSwapQuote } from "@/hooks/use-swap-quote"
 
 export default function SwapPage() {
   const [from, setFrom] = useState("USDC")
-  const [to, setTo] = useState("MON")
+  const [to, setTo] = useState("CELO")
   const [fromAmount, setFromAmount] = useState("100")
 
   const { data: quote } = useSwapQuote(from, to, fromAmount)
@@ -86,7 +86,7 @@ export default function SwapPage() {
         </div>
 
         <p className="text-xs text-muted-foreground text-center">
-          Swaps route through the best Monad Testnet DEX available.
+          Swaps route through the best Celo mainnet DEX available.
         </p>
       </div>
     </AppShell>

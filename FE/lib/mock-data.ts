@@ -1,5 +1,5 @@
 /**
- * Mock seed data used until the Monad Testnet contracts are wired in.
+ * Mock seed data used until the Celo mainnet contracts are wired in.
  * Shapes exactly match `types/index.ts` so swapping to live reads is a one-line change.
  */
 
@@ -40,7 +40,7 @@ export const MOCK_AGENTS: AgentViewModel[] = [
     name: "AlphaBot",
     strategy: "Momentum",
     tradingThesis:
-      "Ride short-term momentum shifts on USDC/WMON breakouts with tight stops.",
+      "Ride short-term momentum shifts on USDC/CELO breakouts with tight stops.",
     feePercent: 1000n,
     registeredAt: 1_700_000_000n,
     totalTrades: 847n,
@@ -78,7 +78,7 @@ export const MOCK_AGENTS: AgentViewModel[] = [
     name: "Carbon Yield",
     strategy: "Liquidity Provider",
     tradingThesis:
-      "Auto-compound MON/USDGLO fees on Carbon DeFi with MEV protection.",
+      "Auto-compound CELO/USDGLO fees on Ubeswap with MEV protection.",
     feePercent: 800n,
     registeredAt: 1_701_000_000n,
     totalTrades: 1204n,
@@ -139,7 +139,7 @@ export const MOCK_AGENTS: AgentViewModel[] = [
  * client components; the `fallbackName` and `description` are only used
  * while the on-chain read is pending or if the agentId is unregistered.
  *
- * Adjust the `agentId` here when new agents are registered on Monad Testnet.
+ * Adjust the `agentId` here when new agents are registered on Celo mainnet.
  */
 export const DASHBOARD_AGENT_SLOTS: DashboardAgentSlot[] = [
   {
@@ -156,7 +156,7 @@ export const DASHBOARD_AGENT_SLOTS: DashboardAgentSlot[] = [
     agentId: 2n,
     fallbackName: "Yield Agent",
     description:
-      "Auto-compounds stablecoin and blue-chip LP positions across Monad DEXs.",
+      "Auto-compounds stablecoin and blue-chip LP positions across Celo DEXs.",
   },
 ]
 
@@ -195,10 +195,10 @@ export const FX_SIGNALS: FxSignal[] = [
 
 export const YIELD_OPPORTUNITIES: YieldOpportunity[] = [
   {
-    id: "carbon-mon-usdglo",
+    id: "ubeswap-celo-usdglo",
     rank: 1,
-    title: "Provide liquidity to MON / USDGLO on Carbon DeFi",
-    protocol: "Carbon DeFi",
+    title: "Provide liquidity to CELO / USDGLO on Ubeswap",
+    protocol: "Ubeswap",
     aprPct: 149.06,
     tvlUsd: 1_000_079,
   },
@@ -211,17 +211,17 @@ export const YIELD_OPPORTUNITIES: YieldOpportunity[] = [
     tvlUsd: 34_605_420,
   },
   {
-    id: "uniswap-mon-usdt",
+    id: "uniswap-celo-usdt",
     rank: 3,
-    title: "Provide liquidity to Uniswap v4 MON–USDT",
+    title: "Provide liquidity to Uniswap v4 CELO–USDT",
     protocol: "Uniswap",
     aprPct: 98.3,
     tvlUsd: 60_039_540,
   },
   {
-    id: "steer-mon-stmon",
+    id: "steer-celo-stcelo",
     rank: 4,
-    title: "Provide liquidity to Steer MON–stMON vault",
+    title: "Provide liquidity to Steer CELO–stCELO vault",
     protocol: "Steer",
     aprPct: 38.35,
     tvlUsd: 513_414_570,

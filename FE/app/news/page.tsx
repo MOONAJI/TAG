@@ -3,9 +3,9 @@ import { NewsCard } from "@/components/news/news-card"
 import { fetchNewsArticles } from "@/lib/api"
 
 export const metadata = {
-  title: "News — Hypervault",
+  title: "News — TAG",
   description:
-    "The latest on Monad, on-chain AI trading agents, FX markets, and DeFi yield.",
+    "The latest on Celo, on-chain AI trading agents, FX markets, and DeFi yield.",
 }
 
 export default async function NewsPage() {
@@ -24,7 +24,7 @@ export default async function NewsPage() {
         </h1>
         <p className="max-w-2xl text-pretty text-base md:text-lg leading-relaxed text-muted-foreground">
           Research and market commentary powering the agents on your dashboard —
-          Monad protocol updates, FX macro, and DeFi yield opportunities.
+          Celo protocol updates, FX macro, and DeFi yield opportunities.
         </p>
       </header>
 

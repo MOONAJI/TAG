@@ -1,9 +1,10 @@
 export const SWAP_TOKENS = [
   "USDC",
-  "MON",
-  "WMON",
+  "CELO",
+  "cUSD",
+  "cEUR",
   "USDGLO",
-  "stMON",
+  "stCELO",
 ] as const
 
 export type SwapToken = (typeof SWAP_TOKENS)[number]

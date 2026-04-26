@@ -3,9 +3,9 @@ pragma solidity ^0.8.24;
 
 /// @title IUniswapV4Router
 /// @notice Minimal interface for executing swaps through Uniswap v4's Universal Router
-///         as deployed on Monad testnet. Full v4 integration (hooks, pool keys, etc.)
-///         is out of scope for the initial Hypervault contracts; this stub captures
-///         the subset the DelegationVault will use when live swap execution is added.
+///         as deployed on Celo. Full v4 integration (hooks, pool keys, etc.) is out
+///         of scope for the initial TAG contracts; this stub captures the subset
+///         the DelegationVault will use when live swap execution is added.
 interface IUniswapV4Router {
     // ─────────────────────────────── Structs ─────────────────────────────────
 

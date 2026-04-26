@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 /// @title IAgentRegistry
 /// @notice Interface for the AgentRegistry contract that manages AI agent identities
-///         on the Hypervault platform.
+///         on the TAG platform.
 interface IAgentRegistry {
     // ─────────────────────────────── Structs ─────────────────────────────────
 

@@ -20,24 +20,22 @@ import { CONTRACT_ADDRESSES } from "@/lib/contracts"
 import {
   useApproveUsdc,
   useDeposit,
-  useMintUsdc,
   useUsdcAllowance,
   useUsdcBalance,
 } from "@/hooks/use-vault"
 
-type Stage = "idle" | "minting" | "approving" | "depositing" | "done" | "error"
+type Stage = "idle" | "approving" | "depositing" | "done" | "error"
 
-const QUICK_AMOUNTS = [100, 500, 1000, 5000]
+const QUICK_AMOUNTS = [10, 50, 100, 500]
 
 /**
- * Top-up flow that combines the MockUSDC faucet (`mint`) with an optional
- * one-click deposit into one of the dashboard agent slots.
+ * Top-up flow for delegating real USDC on Celo to a dashboard agent slot.
  *
- *   - target = "wallet"  → single tx: MockUSDC.mint(connectedWallet, amount)
- *   - target = agentId   → mint → approve (if allowance < amount) → deposit
+ *   - target = "wallet"  → no-op; user already holds the USDC. We just close.
+ *   - target = agentId   → approve (if allowance < amount) → deposit
  *
- * Each on-chain step is awaited via useWaitForTransactionReceipt so the next
- * write only fires after the previous one has been mined.
+ * USDC on Celo is the NATIVE Circle token (0xceba…118C) — there is no faucet.
+ * Users must already hold USDC in their wallet (bridge / fiat onramp / swap).
  */
 export function TopUpDialog({
   trigger,
@@ -48,20 +46,16 @@ export function TopUpDialog({
 }) {
   const { address, isConnected } = useAccount()
   const [open, setOpen] = useState(false)
-  const [amountInput, setAmountInput] = useState("1000")
-  const [target, setTarget] = useState<"wallet" | string>("wallet")
+  const [amountInput, setAmountInput] = useState("100")
+  const [target, setTarget] = useState<"wallet" | string>(
+    DASHBOARD_AGENT_SLOTS[0]?.id ?? "wallet",
+  )
   const [stage, setStage] = useState<Stage>("idle")
   const [err, setErr] = useState<string | null>(null)
 
   const { data: walletUsdc, refetch: refetchBalance } = useUsdcBalance()
   const { data: allowance, refetch: refetchAllowance } = useUsdcAllowance()
 
-  const {
-    mint,
-    data: mintHash,
-    error: mintError,
-    reset: resetMint,
-  } = useMintUsdc()
   const {
     approve,
     data: approveHash,
@@ -75,9 +69,6 @@ export function TopUpDialog({
     reset: resetDeposit,
   } = useDeposit()
 
-  const { isSuccess: mintMined } = useWaitForTransactionReceipt({
-    hash: mintHash,
-  })
   const { isSuccess: approveMined } = useWaitForTransactionReceipt({
     hash: approveHash,
   })
@@ -91,37 +82,10 @@ export function TopUpDialog({
 
   const selectedSlot = DASHBOARD_AGENT_SLOTS.find((s) => s.id === target)
   const goingToAgent = target !== "wallet" && Boolean(selectedSlot)
+  const insufficientBalance =
+    goingToAgent && amountRaw > 0n && (walletUsdc ?? 0n) < amountRaw
 
   // ── Drive the multi-stage flow off receipt mining ───────────────────────
-  useEffect(() => {
-    if (stage === "minting" && mintMined) {
-      refetchBalance()
-      if (!goingToAgent) {
-        setStage("done")
-        return
-      }
-      // Need to know post-mint allowance to decide approve vs skip.
-      const needsApproval = (allowance ?? 0n) < amountRaw
-      if (needsApproval) {
-        setStage("approving")
-        approve(amountRaw)
-      } else {
-        setStage("depositing")
-        deposit(selectedSlot!.agentId, amountRaw)
-      }
-    }
-  }, [
-    mintMined,
-    stage,
-    goingToAgent,
-    allowance,
-    amountRaw,
-    approve,
-    deposit,
-    selectedSlot,
-    refetchBalance,
-  ])
-
   useEffect(() => {
     if (stage === "approving" && approveMined && selectedSlot) {
       refetchAllowance()
@@ -132,20 +96,20 @@ export function TopUpDialog({
 
   useEffect(() => {
     if (stage === "depositing" && depositMined) {
+      refetchBalance()
       setStage("done")
     }
-  }, [depositMined, stage])
+  }, [depositMined, stage, refetchBalance])
 
   useEffect(() => {
-    const e = mintError ?? approveError ?? depositError
+    const e = approveError ?? depositError
     if (e) {
       setErr(e.message.split("\n")[0])
       setStage("error")
     }
-  }, [mintError, approveError, depositError])
+  }, [approveError, depositError])
 
   function reset() {
-    resetMint()
     resetApprove()
     resetDeposit()
     setErr(null)
@@ -153,14 +117,22 @@ export function TopUpDialog({
   }
 
   function handleStart() {
-    if (!address || !amountRaw) return
+    if (!address || !amountRaw || !selectedSlot) return
+    if (insufficientBalance) return
     reset()
-    setStage("minting")
-    mint(address, amountRaw)
+
+    const needsApproval = (allowance ?? 0n) < amountRaw
+    if (needsApproval) {
+      setStage("approving")
+      approve(amountRaw)
+    } else {
+      setStage("depositing")
+      deposit(selectedSlot.agentId, amountRaw)
+    }
   }
 
   function handleClose(next: boolean) {
-    if (!next && (stage === "minting" || stage === "approving" || stage === "depositing")) {
+    if (!next && (stage === "approving" || stage === "depositing")) {
       // Don't allow closing mid-flight; user can still cancel via wallet UI.
       return
     }
@@ -171,8 +143,7 @@ export function TopUpDialog({
     }
   }
 
-  const busy =
-    stage === "minting" || stage === "approving" || stage === "depositing"
+  const busy = stage === "approving" || stage === "depositing"
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -184,8 +155,8 @@ export function TopUpDialog({
             Top up portfolio
           </DialogTitle>
           <DialogDescription>
-            Mint test USDC to your wallet, optionally depositing into an agent
-            in the same flow.
+            Deposit native Celo USDC into an agent vault. You must already hold
+            USDC in your wallet — bridge, swap, or onramp first.
           </DialogDescription>
         </DialogHeader>
 
@@ -232,14 +203,7 @@ export function TopUpDialog({
             <label className="text-xs uppercase tracking-wider text-muted-foreground">
               Send to
             </label>
-            <div className="mt-1 grid grid-cols-3 gap-1.5">
-              <TargetButton
-                active={target === "wallet"}
-                onClick={() => setTarget("wallet")}
-                disabled={busy}
-                label="Wallet only"
-                hint="Mint USDC to wallet"
-              />
+            <div className="mt-1 grid grid-cols-2 gap-1.5">
               {DASHBOARD_AGENT_SLOTS.map((s) => (
                 <TargetButton
                   key={s.id}
@@ -256,41 +220,27 @@ export function TopUpDialog({
           {stage !== "idle" ? (
             <div className="rounded-md border border-border/70 bg-secondary/30 p-3 text-sm">
               <StepRow
-                label="Mint USDC"
+                label="Approve vault"
                 state={
-                  stage === "minting"
+                  stage === "approving"
                     ? "active"
-                    : mintHash
+                    : approveHash
+                      ? "done"
+                      : (allowance ?? 0n) >= amountRaw
+                        ? "skipped"
+                        : "pending"
+                }
+              />
+              <StepRow
+                label={`Deposit into ${selectedSlot?.fallbackName ?? "agent"}`}
+                state={
+                  stage === "depositing"
+                    ? "active"
+                    : depositHash
                       ? "done"
                       : "pending"
                 }
               />
-              {goingToAgent ? (
-                <>
-                  <StepRow
-                    label="Approve vault"
-                    state={
-                      stage === "approving"
-                        ? "active"
-                        : approveHash
-                          ? "done"
-                          : (allowance ?? 0n) >= amountRaw && stage !== "minting"
-                            ? "skipped"
-                            : "pending"
-                    }
-                  />
-                  <StepRow
-                    label={`Deposit into ${selectedSlot?.fallbackName}`}
-                    state={
-                      stage === "depositing"
-                        ? "active"
-                        : depositHash
-                          ? "done"
-                          : "pending"
-                    }
-                  />
-                </>
-              ) : null}
               {stage === "done" ? (
                 <p className="mt-2 text-xs text-primary">
                   Top-up complete. Balances will refresh shortly.
@@ -300,6 +250,13 @@ export function TopUpDialog({
                 <p className="mt-2 text-xs text-destructive">{err}</p>
               ) : null}
             </div>
+          ) : null}
+
+          {insufficientBalance ? (
+            <p className="text-xs text-destructive">
+              Insufficient USDC. Wallet holds ${formatUSDC(walletUsdc ?? 0n)}{" "}
+              but {amountInput} USDC is required.
+            </p>
           ) : null}
         </div>
 
@@ -318,6 +275,8 @@ export function TopUpDialog({
             disabled={
               !isConnected ||
               !amountRaw ||
+              !goingToAgent ||
+              insufficientBalance ||
               busy ||
               stage === "done"
             }
@@ -326,33 +285,30 @@ export function TopUpDialog({
             {busy ? (
               <>
                 <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-                {stage === "minting"
-                  ? "Minting…"
-                  : stage === "approving"
-                    ? "Approving…"
-                    : "Depositing…"}
+                {stage === "approving" ? "Approving…" : "Depositing…"}
               </>
             ) : stage === "done" ? (
               <>
                 <CheckCircle2 className="size-4" aria-hidden="true" />
                 Done
               </>
-            ) : goingToAgent ? (
-              "Mint & Deposit"
             ) : (
-              "Mint USDC"
+              "Deposit USDC"
             )}
           </Button>
         </DialogFooter>
 
         {!isConnected ? (
           <p className="text-xs text-destructive">
-            Connect a wallet on Monad Testnet first.
+            Connect a wallet on Celo mainnet first.
           </p>
         ) : null}
         {/* Vault address shown for transparency — same allowance target for any agent. */}
         <p className="text-[10px] text-muted-foreground font-mono break-all">
           Vault: {CONTRACT_ADDRESSES.DelegationVault}
+        </p>
+        <p className="text-[10px] text-muted-foreground font-mono break-all">
+          USDC: {CONTRACT_ADDRESSES.USDC}
         </p>
       </DialogContent>
     </Dialog>

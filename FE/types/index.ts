@@ -1,5 +1,5 @@
 /**
- * Shared types for Hypervault.
+ * Shared types for TAG.
  * Shapes mirror the on-chain structs from AgentRegistry.sol and DelegationVault.sol.
  * We use `bigint` for on-chain values and `number` for off-chain seed/display values.
  */
@@ -93,7 +93,7 @@ export interface YieldOpportunity {
 /** News article used by /news list and /news/[slug] detail pages */
 export type NewsCategory =
   | "AI Agents"
-  | "Monad"
+  | "Celo"
   | "FX"
   | "Yield"
   | "Protocol"

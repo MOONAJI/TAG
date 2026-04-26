@@ -3,14 +3,14 @@
 import { useReadContract, useWriteContract, useAccount } from "wagmi"
 import { AGENT_REGISTRY_ABI } from "@/lib/abis"
 import { CONTRACT_ADDRESSES } from "@/lib/contracts"
-import { monadTestnet } from "@/lib/wagmi"
+import { celoMainnet } from "@/lib/wagmi"
 
-// All reads are pinned to Monad Testnet so they succeed even when the
-// connected wallet is currently on a different chain (e.g. mainnet default).
+// All reads are pinned to Celo mainnet so they succeed even when the
+// connected wallet is currently on a different chain.
 const registryConfig = {
   address: CONTRACT_ADDRESSES.AgentRegistry,
   abi: AGENT_REGISTRY_ABI,
-  chainId: monadTestnet.id,
+  chainId: celoMainnet.id,
 } as const
 
 /** Read on-chain AgentInfo for a given agentId. */

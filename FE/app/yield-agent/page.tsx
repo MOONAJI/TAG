@@ -30,7 +30,7 @@ export default async function YieldAgentPage() {
             Yield Agent
           </h1>
           <p className="text-sm text-muted-foreground">
-            Auto-compounds stablecoin and blue-chip LP positions across Monad
+            Auto-compounds stablecoin and blue-chip LP positions across Celo
             DEXs.
           </p>
         </header>

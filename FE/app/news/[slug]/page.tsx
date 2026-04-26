@@ -21,9 +21,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: NewsArticlePageProps) {
   const { slug } = await params
   const article = await fetchNewsArticle(slug)
-  if (!article) return { title: "Article not found — Hypervault" }
+  if (!article) return { title: "Article not found — TAG" }
   return {
-    title: `${article.title} — Hypervault`,
+    title: `${article.title} — TAG`,
     description: article.summary,
   }
 }

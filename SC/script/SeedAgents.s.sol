@@ -10,15 +10,16 @@ import {IAgentRegistry} from "../src/interfaces/IAgentRegistry.sol";
 /// @notice Registers the two seed agents (FX = id 1, Yield = id 2) used by the
 ///         FE dashboard slot map. Each agent must be owned by a distinct EOA,
 ///         so this script derives two deterministic operator keys from a salt,
-///         funds them from the deployer, then broadcasts `registerAgent` from
-///         each.
+///         funds them with native CELO from the deployer, then broadcasts
+///         `registerAgent` from each.
 contract SeedAgents is Script {
     // Registry must already be deployed; address is read from env so this
     // script is safe to re-use across redeployments.
     //   REGISTRY_ADDR = 0x...   (deployed AgentRegistry)
-    //   PRIVATE_KEY   = ...     (deployer who holds MON to fund operators)
+    //   PRIVATE_KEY   = ...     (deployer who holds CELO to fund operators)
 
-    uint256 internal constant GAS_FUNDING = 0.2 ether; // MON for each op (Monad ≈ 200 gwei × 500k gas)
+    // Celo gas is cheap — 0.05 CELO per operator is plenty for a few txs.
+    uint256 internal constant GAS_FUNDING = 0.05 ether;
 
     function run() external {
         uint256 deployerKey = vm.envUint("PRIVATE_KEY");
@@ -30,12 +31,12 @@ contract SeedAgents is Script {
         // Deterministic operator keys derived from a project-specific salt so
         // reruns are idempotent (same addresses → registerAgent reverts
         // cleanly if already registered).
-        uint256 fxKey    = uint256(keccak256("hypervault:seed:fx:v1"));
-        uint256 yieldKey = uint256(keccak256("hypervault:seed:yield:v1"));
+        uint256 fxKey    = uint256(keccak256("tag:seed:fx:v1"));
+        uint256 yieldKey = uint256(keccak256("tag:seed:yield:v1"));
         address fxOp    = vm.addr(fxKey);
         address yieldOp = vm.addr(yieldKey);
 
-        console.log("=== Hypervault Seed Agents ===");
+        console.log("=== TAG Seed Agents ===");
         console.log("Deployer :", deployer);
         console.log("Registry :", registryAddr);
         console.log("FX op    :", fxOp);
@@ -57,7 +58,7 @@ contract SeedAgents is Script {
         uint256 fxId = _registerIfNeeded(
             registry,
             fxKey,
-            "Hypervault FX Agent",
+            "TAG FX Agent",
             "Momentum / Carry",
             "Systematic momentum and carry trades across synthetic FX pairs, with drawdown-aware position sizing.",
             500 // 5% operator fee (bps)
@@ -68,9 +69,9 @@ contract SeedAgents is Script {
         uint256 yieldId = _registerIfNeeded(
             registry,
             yieldKey,
-            "Hypervault Yield Agent",
+            "TAG Yield Agent",
             "Auto-Compounding LP",
-            "Auto-compounds stablecoin and blue-chip LP positions across Monad DEXs with on-chain yield rotation.",
+            "Auto-compounds stablecoin and blue-chip LP positions across Celo DEXs with on-chain yield rotation.",
             500
         );
         console.log("Yield agentId:", yieldId);

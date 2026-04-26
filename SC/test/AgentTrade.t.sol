@@ -13,7 +13,7 @@ import {IDelegationVault} from "../src/interfaces/IDelegationVault.sol";
 import {IPlatformFee} from "../src/interfaces/IPlatformFee.sol";
 
 /// @title AgentTradeTest
-/// @notice Full test coverage for the Hypervault protocol contracts.
+/// @notice Full test coverage for the TAG protocol contracts.
 ///         Organized into labelled sections matching the spec's test matrix.
 contract AgentTradeTest is Test {
     // ──────────────────────────────── Contracts ───────────────────────────────
@@ -68,7 +68,7 @@ contract AgentTradeTest is Test {
         vm.prank(agent1Owner);
         agentId1 = registry.registerAgent(
             "AlphaBot",
-            "Momentum breakout on USDC/WMON",
+            "Momentum breakout on USDC/CELO",
             "Ride short-term momentum shifts",
             AGENT1_FEE_BPS
         );

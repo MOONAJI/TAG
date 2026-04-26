@@ -10,27 +10,27 @@ import {
 import { useQueryClient } from "@tanstack/react-query"
 import { DELEGATION_VAULT_ABI, ERC20_ABI, PLATFORM_FEE_ABI } from "@/lib/abis"
 import { CONTRACT_ADDRESSES } from "@/lib/contracts"
-import { monadTestnet } from "@/lib/wagmi"
+import { celoMainnet } from "@/lib/wagmi"
 
-// Pin all reads to Monad Testnet. Without this, wagmi uses the wallet's
-// current chain — if the user is still on mainnet, every read returns empty
-// and the UI reports "Not registered" even when the contracts are healthy.
+// Pin all reads to Celo mainnet. Without this, wagmi uses the wallet's
+// current chain — if the user is on a different chain, every read returns
+// empty and the UI reports "Not registered" even when the contracts are healthy.
 const vaultConfig = {
   address: CONTRACT_ADDRESSES.DelegationVault,
   abi: DELEGATION_VAULT_ABI,
-  chainId: monadTestnet.id,
+  chainId: celoMainnet.id,
 } as const
 
 const usdcConfig = {
-  address: CONTRACT_ADDRESSES.MockUSDC,
+  address: CONTRACT_ADDRESSES.USDC,
   abi: ERC20_ABI,
-  chainId: monadTestnet.id,
+  chainId: celoMainnet.id,
 } as const
 
 const platformFeeConfig = {
   address: CONTRACT_ADDRESSES.PlatformFee,
   abi: PLATFORM_FEE_ABI,
-  chainId: monadTestnet.id,
+  chainId: celoMainnet.id,
 } as const
 
 /**
@@ -89,7 +89,7 @@ export function usePendingReward(agentId: bigint | undefined) {
   })
 }
 
-/** Read MockUSDC balance of the connected wallet. */
+/** Read native USDC balance of the connected wallet. */
 export function useUsdcBalance() {
   const { address } = useAccount()
   return useReadContract({
@@ -100,7 +100,7 @@ export function useUsdcBalance() {
   })
 }
 
-/** Read MockUSDC allowance the connected wallet has granted to DelegationVault. */
+/** Read native USDC allowance the connected wallet has granted to DelegationVault. */
 export function useUsdcAllowance() {
   const { address } = useAccount()
   return useReadContract({
@@ -174,21 +174,6 @@ export function useClaimOperatorRewards() {
       args: [agentId],
     })
   return { claimOperator, ...rest }
-}
-
-/**
- * Mint MockUSDC to an arbitrary address (testnet faucet — open by design).
- * The deployed MockUSDC has no access control on `mint`.
- */
-export function useMintUsdc() {
-  const { writeContract, ...rest } = useWriteContract()
-  const mint = (to: `0x${string}`, amount: bigint) =>
-    writeContract({
-      ...usdcConfig,
-      functionName: "mint",
-      args: [to, amount],
-    })
-  return { mint, ...rest }
 }
 
 /**

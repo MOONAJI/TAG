@@ -1,37 +1,13 @@
 import { createConfig, http } from "wagmi";
-import { mainnet } from "wagmi/chains";
-import { defineChain } from "viem";
+import { celo, mainnet } from "wagmi/chains";
 
-const monadTestnet = defineChain({
-  id: 10143,
-  name: "Monad Testnet",
-  nativeCurrency: {
-    decimals: 18,
-    name: "Monad",
-    symbol: "MON",
-  },
-  rpcUrls: {
-    default: {
-      http: [
-        process.env.NEXT_PUBLIC_MONAD_RPC_URL ??
-          "https://testnet-rpc.monad.xyz",
-      ],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: "Monad Explorer",
-      url: "https://testnet.monadexplorer.com",
-    },
-  },
-  testnet: true,
-});
+const celoMainnet = celo;
 
 export const config = createConfig({
-  chains: [monadTestnet, mainnet],
+  chains: [celoMainnet, mainnet],
   transports: {
-    [monadTestnet.id]: http(
-      process.env.NEXT_PUBLIC_MONAD_RPC_URL ?? "https://testnet-rpc.monad.xyz",
+    [celoMainnet.id]: http(
+      process.env.NEXT_PUBLIC_CELO_RPC_URL ?? "https://forno.celo.org",
     ),
     [mainnet.id]: http(),
   },

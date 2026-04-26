@@ -1,28 +1,18 @@
 import { http, createConfig } from "wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
+import { celo, mainnet } from "wagmi/chains";
 import { injected, metaMask } from "wagmi/connectors";
 
-export const monadTestnet = {
-  id: 10143,
-  name: "Monad Testnet",
-  nativeCurrency: { name: "Monad", symbol: "MON", decimals: 18 },
-  rpcUrls: {
-    default: { http: ["https://testnet-rpc.monad.xyz/"] },
-  },
-  blockExplorers: {
-    default: {
-      name: "Monad Explorer",
-      url: "https://testnet.monadexplorer.com",
-    },
-  },
-} as const;
+// Re-export the canonical Celo mainnet definition under the historic
+// `monadTestnet` name so existing imports keep working without a sweep.
+// Everything in the app now points at Celo mainnet (chainId 42220) and
+// uses native CELO + native USDC.
+export const celoMainnet = celo;
 
 export const config = createConfig({
-  chains: [monadTestnet, mainnet, sepolia],
+  chains: [celo, mainnet],
   connectors: [injected(), metaMask()],
   transports: {
-    [monadTestnet.id]: http(),
+    [celo.id]: http("https://forno.celo.org"),
     [mainnet.id]: http(),
-    [sepolia.id]: http(),
   },
 });

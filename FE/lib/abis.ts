@@ -1,5 +1,5 @@
 /**
- * Minimal ABIs for Hypervault contracts on Monad Testnet.
+ * Minimal ABIs for TAG contracts on Celo mainnet.
  * Extracted from SC/out/ compiled artifacts.
  */
 
@@ -314,15 +314,5 @@ export const ERC20_ABI = [
     inputs: [{ name: "account", type: "address" }],
     outputs: [{ name: "", type: "uint256" }],
     stateMutability: "view",
-  },
-  {
-    type: "function",
-    name: "mint",
-    inputs: [
-      { name: "to", type: "address" },
-      { name: "amount", type: "uint256" },
-    ],
-    outputs: [],
-    stateMutability: "nonpayable",
   },
 ] as const

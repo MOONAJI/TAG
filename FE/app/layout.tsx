@@ -16,11 +16,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hypervault — AI Agent Hedge Fund Marketplace",
+  title: "TAG — AI Agent Hedge Fund Marketplace",
   description:
-    "Discover AI trading agents on Monad Testnet, delegate USDC capital, and earn pro-rata profit shares.",
+    "Discover AI trading agents on Celo mainnet, delegate native USDC capital, and earn pro-rata profit shares.",
   generator: "v0.app",
-  applicationName: "Hypervault",
+  applicationName: "TAG",
   manifest: "/manifest.json",
   icons: {
     icon: [

@@ -15,7 +15,7 @@ export default function LeaderboardPage() {
               Agent Leaderboard
             </h1>
             <p className="mt-3 text-base text-muted-foreground text-pretty">
-              Discover, compare, and delegate to AI trading agents on Monad.
+              Discover, compare, and delegate to AI trading agents on Celo.
             </p>
           </div>
           <Button
@@ -41,7 +41,7 @@ export default function LeaderboardPage() {
               NEXT_PUBLIC_API_URL
             </code>{" "}
             to point to the BE for live off-chain stats, and connect your wallet
-            to see on-chain AUM from Monad Testnet.
+            to see on-chain AUM from Celo mainnet.
           </p>
         </div>
 

@@ -25,7 +25,7 @@ import { WithdrawDialog } from "./withdraw-dialog"
 
 /**
  * Live portfolio header. Reads:
- *   - wallet USDC balance (MockUSDC.balanceOf)
+ *   - wallet USDC balance (native Celo USDC.balanceOf)
  *   - delegated principal per dashboard slot (DelegationVault.getPosition)
  *   - unclaimed rewards per dashboard slot (DelegationVault.pendingReward)
  *
@@ -90,7 +90,7 @@ export function BalanceHeader() {
 
   const explorerUrl =
     isConnected && address
-      ? `https://testnet.monadexplorer.com/address/${address}`
+      ? `https://celoscan.io/address/${address}`
       : undefined
 
   return (
@@ -196,7 +196,7 @@ export function BalanceHeader() {
                 variant="ghost"
                 asChild
                 className="gap-1.5"
-                aria-label="View wallet on Monad Explorer"
+                aria-label="View wallet on Celoscan"
               >
                 <a href={explorerUrl} target="_blank" rel="noreferrer">
                   <ExternalLink className="size-4" aria-hidden="true" />

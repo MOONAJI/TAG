@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./interfaces/IPlatformFee.sol";
 
 /// @title PlatformFee
-/// @notice Collects and manages Hypervault's per-trade protocol fee (default 0.1%).
+/// @notice Collects and manages TAG's per-trade protocol fee (default 0.1%).
 ///
 ///         Design notes:
 ///         - Default fee is 10 basis points (0.1%) consistent with the spec.

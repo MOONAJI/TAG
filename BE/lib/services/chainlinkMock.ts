@@ -1,11 +1,12 @@
 // ============================================================
 // FILE: lib/services/chainlinkMock.ts
-// Taruh di: agenttrademonad/lib/services/chainlinkMock.ts
+// Taruh di: tag/BE/lib/services/chainlinkMock.ts
 //
 // Mock Chainlink price feed. Nanti kalau mau pakai real Chainlink,
 // bisa pakai viem yang udah ada di project:
 //   import { createPublicClient, http } from "viem";
-//   const client = createPublicClient({ chain: monad, transport: http() });
+//   import { celo } from "viem/chains";
+//   const client = createPublicClient({ chain: celo, transport: http() });
 // ============================================================
 
 import type { PriceFeed, AllPrices } from "@/types/agent";

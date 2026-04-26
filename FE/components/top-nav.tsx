@@ -37,7 +37,7 @@ export function TopNav() {
             <TrendingUp className="size-4" strokeWidth={2.5} />
           </span>
           <span className="font-semibold tracking-tight text-[15px]">
-            HYPERVAULT
+            TAG
           </span>
         </Link>
 

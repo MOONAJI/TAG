@@ -300,7 +300,7 @@ export function WithdrawDialog({
 
         {!isConnected ? (
           <p className="text-xs text-destructive">
-            Connect a wallet on Monad Testnet first.
+            Connect a wallet on Celo mainnet first.
           </p>
         ) : null}
       </DialogContent>

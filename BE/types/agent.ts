@@ -1,6 +1,6 @@
 // ============================================================
 // FILE: types/agent.ts
-// Taruh di: agenttrademonad/types/agent.ts
+// Taruh di: tag/BE/types/agent.ts
 // ============================================================
 
 export type Strategy =

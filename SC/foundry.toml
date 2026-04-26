@@ -12,8 +12,8 @@ optimizer       = true
 optimizer_runs  = 200
 via_ir          = false     # set to true for complex contracts if stack-too-deep errors arise
 
-# EVM target — use cancun for Monad (EVM-equivalent)
-evm_version     = "cancun"
+# EVM target — Celo supports up to london; cancun-only opcodes are disabled here
+evm_version     = "london"
 
 # Verbosity: 0=silent, 1=errors, 2=logs, 3=traces, 4=+stack, 5=+storage
 verbosity       = 2
@@ -40,14 +40,14 @@ runs   = 256
 depth  = 15
 call_override = false
 
-# ── Monad Testnet RPC ─────────────────────────────────────────────────────────
+# ── Celo Mainnet RPC ──────────────────────────────────────────────────────────
 [rpc_endpoints]
-monad-testnet = "${MONAD_RPC_URL}"
-localhost     = "http://127.0.0.1:8545"
+celo      = "${CELO_RPC_URL}"
+localhost = "http://127.0.0.1:8545"
 
 # ── Etherscan / Explorer config ───────────────────────────────────────────────
 [etherscan]
-monad-testnet = { key = "${EXPLORER_API_KEY}", url = "https://testnet.monadexplorer.com/api?" }
+celo = { key = "${EXPLORER_API_KEY}", url = "https://api.celoscan.io/api", chain = 42220 }
 
 # ── CI profile: more fuzz runs, stricter settings ────────────────────────────
 [profile.ci]

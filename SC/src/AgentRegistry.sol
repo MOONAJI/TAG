@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "./interfaces/IAgentRegistry.sol";
 
 /// @title AgentRegistry
-/// @notice On-chain registry for AI trading agents on the Hypervault platform.
+/// @notice On-chain registry for AI trading agents on the TAG platform.
 ///         Implements ERC-8004-inspired agent identity with on-chain reputation,
 ///         reviews, and trade-count tracking.
 ///
