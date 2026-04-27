@@ -29,7 +29,10 @@ export const metadata: Metadata = {
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
     apple: "/apple-icon.png",
+  },other: {
+    "talentapp:project_verification": "0615b45fc7dbb1cb2ad57d23daec1c25a226fefebdda7ca84c407d209e478a581fe608fb9328dea6514931931a963b8bda4b9ed098924498b8c83fc1adb3a38e",
   },
+
 };
 
 export const viewport: Viewport = {
